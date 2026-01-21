@@ -1,4 +1,4 @@
-<DAY1>
+
 # Investment Analysis Backend
 
 개인 투자자의 판단을 기록하고,
@@ -10,7 +10,7 @@
 - 레이어 및 도메인 구조 설계
 - Spring Boot + JPA 기반 실행 환경 구축
 
-<Day2>
+## Project Day2
 #Event Domain & CRUD API
 
 > 목표: “종목별 기업 이벤트 타임라인(Event)” 도메인을 만들고, 기본 CRUD API(등록/조회/수정/삭제)를 완성한다.  
@@ -18,7 +18,7 @@
 
 ---
 
-##  오늘 한 일 요약
+# 오늘 한 일 요약
 
 - [x] `Event` 엔티티 설계 (기업 이벤트)
 - [x] `EventType` enum 정의
