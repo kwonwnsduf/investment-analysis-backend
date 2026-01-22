@@ -82,3 +82,67 @@
 - 판단 시점 데이터만 저장하여 책임 분리
 - 비즈니스 로직은 Service 계층에 집중
 - 확장 가능한 도메인 구조 유지
+
+
+---
+## Project Day4
+# Symbol & Watchlist Domain & CRUD API
+
+> 목표: “투자 분석의 대상이 되는 종목(Symbol)”을 정의하고,  
+> JWT 인증 기반 관심종목(Watchlist)을 통해 **사용자별 분석 범위**를 확정한다.  
+> 이 도메인은 이후 투자 판단(Decision), 기업 이벤트(Event), 가격 분석의 **기준 축(Core Domain)** 이 된다.
+
+---
+
+### 오늘 한 일 요약
+
+- [x] JWT 인증 기반 사용자 식별 구조 확정 (`@AuthenticationPrincipal`)
+- [x] `Symbol` 엔티티 설계 (공용 종목 마스터)
+- [x] `Watchlist` 엔티티 설계 (User × Symbol 관계 엔티티)
+- [x] `(user_id, symbol_id)` 복합 UNIQUE 제약 적용
+- [x] `WatchlistRepository` 생성 (사용자 기준 조회)
+- [x] `WatchlistService` 생성 (추가 / 조회 / 삭제)
+- [x] `WatchlistController` 생성 (REST API)
+- [x] `SymbolResponse` DTO 작성 (Entity 직접 노출 방지)
+- [x] 인증 기반 API 접근 제어 (토큰 없을 시 401)
+
+---
+
+### 핵심 개념 정리
+
+- Symbol은 **시장에 존재하는 종목의 공용 마스터 데이터**이다.
+- Watchlist는 **사용자와 종목 간의 관계(Entity)** 이다.
+- 관심종목은 “분석 대상”을 의미하며, 개인화 분석의 출발점이 된다.
+- 사용자 식별은 Request가 아닌 **SecurityContext(JWT)** 기준으로 처리한다.
+- 한 사용자는 같은 종목을 **한 번만** 관심종목으로 등록할 수 있다.
+
+---
+
+### 구현 범위
+
+- 종목(Symbol) 등록 및 조회
+- 관심종목(Watchlist) 추가
+- 사용자별 관심종목 목록 조회
+- 관심종목 삭제
+- 인증된 사용자만 API 접근 가능
+
+---
+
+### API 요약
+
+| Method | Endpoint | Description |
+|------|---------|------------|
+| POST | `/api/watchlist/{symbolId}` | 관심종목 추가 |
+| GET | `/api/watchlist` | 내 관심종목 목록 조회 |
+| DELETE | `/api/watchlist/{symbolId}` | 관심종목 삭제 |
+
+---
+
+### 설계 포인트
+
+- 공용 데이터(Symbol)와 개인화 데이터(Watchlist) 명확히 분리
+- 인증 정보는 `@AuthenticationPrincipal`을 통해 주입
+- Entity 직접 반환 금지 → Response DTO 사용
+- 비즈니스 규칙 `(user_id, symbol_id)` UNIQUE 제약으로 DB 레벨에서 강제
+- 확장 가능한 도메인 구조 유지 (Decision / Event / Analysis 연계)
+
