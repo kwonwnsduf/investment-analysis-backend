@@ -146,3 +146,80 @@
 - 비즈니스 규칙 `(user_id, symbol_id)` UNIQUE 제약으로 DB 레벨에서 강제
 - 확장 가능한 도메인 구조 유지 (Decision / Event / Analysis 연계)
 
+---
+
+##Project Day5
+
+# Company Event Domain & Timeline CRUD API
+
+> 목표: 사용자별 · 종목별 **기업 이벤트(Company Event) 타임라인**을 기록하고,  
+> 이후 이벤트 영향 분석(Event Impact), 기다림 시뮬레이션의 **기초 데이터**를 구축한다.  
+> 이 도메인은 투자 판단(Decision)과 시장 분석을 연결하는 **시간 축(Time Axis)** 이 된다.
+
+---
+
+## ✅ 오늘 한 일 요약
+
+- [x] `CompanyEvent` 엔티티 설계 (사용자별 기업 이벤트 기록)
+- [x] `EventType` enum 정의 (실적, 배당, M&A 등 이벤트 분류)
+- [x] 사용자 기준 이벤트 소유권 모델링 (`userId` 참조)
+- [x] 종목(Symbol)과의 연관관계 설정 (`ManyToOne`)
+- [x] `(user_id, symbol_id, event_at)` 복합 인덱스 적용
+- [x] `CompanyEventRepository` 생성 (타임라인 조회 / 소유권 검증)
+- [x] `CompanyEventService` 생성 (CRUD 비즈니스 로직)
+- [x] `CompanyEventController` 생성 (REST API)
+- [x] `CompanyEventResponse` DTO 작성 (Entity 직접 노출 방지)
+- [x] JWT 인증 기반 사용자 이벤트 접근 제어
+
+---
+
+## 🧠 핵심 개념 정리
+
+- CompanyEvent는 **“사용자가 기록한 기업 단위 이벤트”** 이다.
+- 이벤트는 항상 **사용자(User) + 종목(Symbol)** 기준으로 관리된다.
+- 이벤트는 분석의 대상이므로 **수정은 허용하되, 최소화**하는 것을 원칙으로 한다.
+- 이벤트는 가격 분석, 판단 분석보다 **선행되는 원천 데이터**다.
+- 사용자 식별은 Request 파라미터가 아닌 **JWT 인증 정보**를 기준으로 처리한다.
+
+---
+
+## 🧱 구현 범위
+
+- 기업 이벤트 생성
+- 사용자 + 종목 기준 이벤트 타임라인 조회 (최신순)
+- 기업 이벤트 수정
+- 기업 이벤트 삭제
+- 인증된 사용자만 이벤트 접근 가능
+
+---
+
+## 🌐 API 요약
+
+| Method | Endpoint | Description |
+|------|---------|------------|
+| POST | `/api/events` | 기업 이벤트 생성 |
+| GET | `/api/events/timeline?symbolId={symbolId}` | 종목별 이벤트 타임라인 조회 |
+| PATCH | `/api/events/{eventId}` | 기업 이벤트 수정 |
+| DELETE | `/api/events/{eventId}` | 기업 이벤트 삭제 |
+
+---
+
+## 🧩 설계 포인트
+
+- 사용자(User)는 엔티티 연관관계를 맺지 않고 `userId`로 참조  
+  → 기록/로그 성격 도메인에 적합한 설계
+- 종목(Symbol)은 핵심 도메인이므로 `ManyToOne` 연관관계 유지
+- `(user_id, symbol_id, event_at)` 복합 인덱스로  
+  타임라인 조회 성능 최적화
+- 수정/삭제 시 `eventId + userId` 조건으로  
+  **소유권을 DB 조회 단계에서 검증**
+- Entity 직접 반환 금지 → Response DTO 사용
+
+---
+
+## 🎯 Day4 한 줄 요약
+
+> 사용자별 기업 이벤트를 타임라인 형태로 기록하여,  
+> 이후 이벤트 영향 분석과 투자 판단 분석을 위한 시간 축 데이터를 구축했다.
+
+
