@@ -217,9 +217,59 @@
 
 ---
 
-## 🎯 Day4 한 줄 요약
+## 🎯 Day5 한 줄 요약
 
 > 사용자별 기업 이벤트를 타임라인 형태로 기록하여,  
 > 이후 이벤트 영향 분석과 투자 판단 분석을 위한 시간 축 데이터를 구축했다.
 
 
+# 📘 Project Day6 – Decision(판단) 기록 & 심리 태그
+
+## 🎯 Day6 목표
+- 사용자의 **투자 판단(Decision)** 을 기록한다
+- 판단 시점의 **심리 상태(Emotion Tag)** 를 함께 저장한다
+- 인증된 사용자 기준으로 **본인 데이터만 조회/수정/삭제** 가능하게 한다
+- Postman으로 전체 흐름을 직접 검증한다
+
+---
+
+## 🧠 핵심 컨셉
+
+> “이 사용자가, 이 시점에, 이 종목에 대해  
+> 어떤 판단을 했고, 어떤 감정 상태였는가?”
+
+Decision은 이후
+- 감정 분석
+- 판단 일관성
+- 기다림/후회 분석  
+  의 **중심 데이터**가 된다.
+
+---
+
+## 🧩 Domain 구성
+
+### Decision Entity
+- 투자 판단의 핵심 엔티티
+
+**주요 필드**
+- `id`
+- `user` (판단한 사용자)
+- `symbol` (판단 대상 종목)
+- `type` (BUY / SELL / HOLD)
+- `emotions` (Set\<EmotionTag\>)
+- `confidence` (확신 정도, Integer)
+- `reason` (판단 이유)
+- `decidedAt` (판단 시각)
+
+---
+
+### EmotionTag (Enum)
+판단 당시의 심리 상태를 표현
+
+예시:
+- `FEARFUL`
+- `ANXIOUS`
+- `CALM`
+- `CONFIDENT`
+
+Decision ↔ EmotionTag 는 **다대다(M:N)** 관계로 관리된다.
