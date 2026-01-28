@@ -273,3 +273,71 @@ Decision은 이후
 - `CONFIDENT`
 
 Decision ↔ EmotionTag 는 **다대다(M:N)** 관계로 관리된다.
+
+---
+
+# Project Day7 — Decision × CriteriaTag 설계
+
+## 🎯 목표
+
+투자 판단(Decision)에  
+**“왜 그런 판단을 했는가?”** 를 구조적으로 남기기 위해  
+판단 기준(CriteriaTag)을 도입하고,  
+Decision ↔ CriteriaTag를 **연결 엔티티(DecisionCriteria)** 로 설계한다.
+
+이 구조를 통해 이후 **기준별 성과 분석 / 기준 진화 분석**이 가능해진다.
+
+---
+
+## 🧩 도메인 구성
+
+### 1️⃣ Decision (투자 판단)
+
+- 사용자가 특정 종목에 대해 내린 **하나의 판단 기록**
+- 주요 정보
+  - BUY / SELL / HOLD
+  - confidence (확신도)
+  - reason (판단 이유)
+  - emotions (감정 태그)
+- 하나의 Decision은 **여러 개의 판단 기준**을 가질 수 있음
+
+---
+
+### 2️⃣ CriteriaTag (판단 기준 사전)
+
+- 판단에 사용되는 **기준의 정의**
+- 예시
+  - 실적성장
+  - 저평가
+  - 기술적돌파
+- 특징
+  - 전역에서 공유되는 기준 사전
+  - `name`으로 의미를 표현
+  - `UNIQUE(name)` 제약으로 중복 방지
+
+---
+
+### 3️⃣ DecisionCriteria (연결 엔티티)
+
+- Decision ↔ CriteriaTag 를 연결하는 **중간 엔티티**
+- 의미
+  - “이 판단에 이 기준이 실제로 사용되었다”
+- 특징
+  - `(decision_id, criteria_tag_id)` 복합 UNIQUE 제약
+  - 중복 연결 방지
+  - 향후 가중치, 점수, 메모 등 확장 가능
+
+---
+
+## 🔗 엔티티 관계
+
+```text
+Decision (1)
+   |
+   | 1:N
+   |
+DecisionCriteria
+   |
+   | N:1
+   |
+CriteriaTag

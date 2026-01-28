@@ -1,5 +1,6 @@
 package com.example.investment.domain.decision;
 
+import com.example.investment.domain.criteria.DecisionCriteria;
 import com.example.investment.domain.investmentlog.DecisionType;
 import com.example.investment.domain.symbol.Symbol;
 import com.example.investment.domain.user.User;
@@ -22,7 +23,6 @@ import java.util.Set;
         })
 public class Decision {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "user_id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,6 +54,9 @@ public class Decision {
 
     @Column(name = "decided_at", nullable = false)
     private LocalDateTime decidedAt;
+
+    @OneToMany(mappedBy = "decision", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DecisionCriteria> criteriaLinks = new HashSet<>();
 
 
     public static Decision create(
@@ -101,6 +104,12 @@ public class Decision {
         if (newEmotions != null) {
             this.emotions.addAll(newEmotions);
         }
+    }
+    public void clearCriteriaLinks() {
+        this.criteriaLinks.clear();
+    }
+    public void addCriteriaLink(DecisionCriteria link) {
+        this.criteriaLinks.add(link);
     }
     private void validateConfidenceRange(Integer confidence) {
         if (confidence == null) return; // 선택값

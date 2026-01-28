@@ -17,7 +17,10 @@ public class DecisionCreateRequest {
     private Long symbolId;
 
     @NotNull
-    private DecisionType type; // BUY / SELL / HOLD
+    private DecisionType type;
+    // BUY / SELL / HOLD
+
+    private Set<Long> criteriaTagIds;
 
     // 선택값
     private Set<EmotionTag> emotions;
