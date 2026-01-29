@@ -341,3 +341,46 @@ DecisionCriteria
    | N:1
    |
 CriteriaTag
+
+```
+---
+
+# Project Day 8 — MarketSnapshot Domain (시장 스냅샷)
+
+> 목표: **의사결정(Decision) 시점의 시장 상태(가격·지표)를 정량적으로 기록**한다.  
+> 감정/기준(EmotionTag, CriteriaTag)처럼 주관적 요소뿐 아니라, **팩트 데이터(가격/지표)**를 함께 남겨 이후 분석(성과/패턴/오판 원인)을 가능하게 한다.
+
+---
+
+## ✅ 오늘 구현한 것 (Checklist)
+
+- [x] `Symbol` ↔ `MarketSnapshot` 연관관계 설계 (**1 Symbol : N Snapshots**)
+- [x] `MarketSnapshot` 엔티티 생성 (가격/지표 + capturedAt)
+- [x] `MarketSnapshotRepository` 생성
+  - [x] 특정 종목의 **최신 스냅샷 1개 조회**
+- [x] `MarketSnapshotService` 생성
+  - [x] 스냅샷 저장
+  - [x] 최신 스냅샷 조회
+- [x] `MarketSnapshotController` 생성
+  - [x] `POST /api/snapshots/{symbolId}` 저장 API
+  - [x] `GET /api/snapshots/{symbolId}/latest` 최신 조회 API
+- [x] 기본 예외 처리 구성 (`ApiException`, `ErrorCode`, `GlobalExceptionHandler`)
+
+---
+
+## 🧩 도메인 설계
+
+### 1) Symbol ↔ MarketSnapshot 관계
+
+- `Symbol` : **분석 대상(종목)**
+- `MarketSnapshot` : **특정 시점(capturedAt)의 시장 상태 기록**
+
+관계는 아래처럼 정의한다:
+
+- 하나의 `Symbol`은 **여러 개의 `MarketSnapshot`**을 가진다.
+- 하나의 `MarketSnapshot`은 **반드시 하나의 `Symbol`**에 속한다.
+
+```java
+@ManyToOne(fetch = FetchType.LAZY, optional = false)
+@JoinColumn(name = "symbol_id", nullable = false)
+private Symbol symbol;

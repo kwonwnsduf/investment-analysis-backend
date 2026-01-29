@@ -8,7 +8,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자를 찾을 수 없습니다"),
     SYMBOL_NOT_FOUND(HttpStatus.NOT_FOUND,"종목을 찾을 수 없습니다"),
     DECISION_NOT_FOUND(HttpStatus.NOT_FOUND,"결정관련 정보를 찾을 수 없습니다"),
-
+    SNAPSHOT_NOT_FOUND(HttpStatus.NOT_FOUND,"스냅샷 관련 정보를 찾을 수 없습니다"),
     // 예시(앞으로 확장)
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다.");
 
