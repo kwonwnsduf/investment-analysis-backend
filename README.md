@@ -384,3 +384,64 @@ CriteriaTag
 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 @JoinColumn(name = "symbol_id", nullable = false)
 private Symbol symbol;
+
+```
+---
+
+# 📅 Project Day 9
+## Waiting Simulation (기다림 시뮬레이션)
+
+---
+
+## 🎯 목표
+
+투자 판단 시점에 바로 행동하지 않고  
+**N일을 더 기다렸다면 수익률이 어떻게 달라졌을지**를 계산한다.
+
+이 기능은 단순한 투자 결과 기록이 아니라,  
+**투자 판단의 대안 시나리오(if)** 를 수치로 분석하는 데 목적이 있다.
+
+---
+
+##  왜 필요한가?
+
+일반적인 투자 기록 앱은 다음 정보만 남긴다.
+
+- 언제 샀는가
+- 얼마에 샀는가
+- 결과가 어땠는가
+
+하지만 이 프로젝트는 다음 질문에 답한다.
+
+> **“그때 바로 행동하지 않고 기다렸다면 더 나았을까?”**
+
+이를 위해서는  
+**과거 시점의 시장 상태를 정확히 복원**할 수 있어야 하며,  
+이 역할을 `MarketSnapshot`이 담당한다.
+
+---
+
+##  핵심 도메인 구조
+
+## 📌 MarketSnapshot 도메인
+
+**특정 시점의 시장 상태를 그대로 저장하는 불변 데이터**
+
+### 역할
+- 과거 가격 및 지표 복원
+- 판단 시점과 결과 시점을 시간 기준으로 비교
+- 이후 모든 분석(Event Impact, Emotion 분석)의 기준 데이터
+
+### 주요 필드
+```java
+Symbol symbol;              // 종목
+BigDecimal price;           // 가격
+BigDecimal changeRate;      // 등락률
+BigDecimal per;             // PER
+BigDecimal pbr;             // PBR
+BigDecimal roe;             // ROE
+BigDecimal rsi;             // RSI
+LocalDateTime capturedAt;   // 스냅샷 시점
+
+```
+

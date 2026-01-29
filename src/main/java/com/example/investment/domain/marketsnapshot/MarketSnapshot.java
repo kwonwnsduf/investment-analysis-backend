@@ -14,14 +14,15 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "market_snapshots",
         indexes = {
-                @Index(name = "idx_snapshot_symbol_time", columnList = "symbol_id, capturedAt")
+                @Index(name = "idx_snapshot_symbol_time", columnList = "symbol_id, captured_at")
         })
 public class MarketSnapshot {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "symbol_id", nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "symbol_id", nullable = false)
     private Symbol symbol;
 
     // 가격 정보
@@ -43,8 +44,8 @@ public class MarketSnapshot {
     private BigDecimal rsi;
 
     @Column(name = "captured_at", nullable = false)
-
     private LocalDateTime capturedAt;
+
     public static MarketSnapshot of(Symbol symbol, MarketSnapshotRequest req) {
         return MarketSnapshot.builder()
                 .symbol(symbol)
