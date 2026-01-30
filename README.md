@@ -445,3 +445,29 @@ LocalDateTime capturedAt;   // 스냅샷 시점
 
 ```
 
+---
+
+## Project Day 10- Event Impact 분석
+
+### 목표
+기업 이벤트가 실제 가격에 어떤 영향을 미쳤는지를
+정량적으로 분석하여 기록한다.
+
+### 구현 내용
+- EventImpact 엔티티 설계
+- 이벤트 전/후 가격 기반 변화율 계산
+- 분석 기간(windowDays)별 Impact 저장
+- EventImpact API 구현
+
+### 핵심 개념
+- Event = 원인
+- MarketSnapshot = 시계열 가격 데이터
+- EventImpact = 결과(영향 분석)
+
+### 기대 효과
+- 이벤트의 의미를 숫자로 검증
+- 투자 판단의 사후 평가 데이터 확보
+
+---
+
+
