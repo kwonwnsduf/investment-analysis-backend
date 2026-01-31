@@ -447,7 +447,7 @@ LocalDateTime capturedAt;   // 스냅샷 시점
 
 ---
 
-## Project Day 10- Event Impact 분석
+## Project Day 11- Event Impact 분석
 
 ### 목표
 기업 이벤트가 실제 가격에 어떤 영향을 미쳤는지를
@@ -469,5 +469,26 @@ LocalDateTime capturedAt;   // 스냅샷 시점
 - 투자 판단의 사후 평가 데이터 확보
 
 ---
+## Project Day10 – Emotion Analytics
+
+### Goal
+Analyze how emotional states at decision time affect investment performance.
+
+### Key Features
+- Emotion-based win/loss statistics
+- Average return rate per emotion
+- Win rate calculation
+- User-specific analytics
+
+### API
+GET /api/analytics/emotions
+
+### Insights Example
+- FEAR → 낮은 승률, 음수 평균 수익률
+- CONFIDENCE → 높은 평균 수익률
+- IMPULSIVE → WaitingSimulation 대비 성과 열위
+
+### Meaning
+This system transforms raw investment logs into behavioral insights.
 
 

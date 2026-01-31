@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,6 +59,8 @@ public class Decision {
     @OneToMany(mappedBy = "decision", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DecisionCriteria> criteriaLinks = new HashSet<>();
 
+    @Column(name = "return_rate", precision = 19, scale = 6)
+    private BigDecimal returnRate;
 
     public static Decision create(
             User user,
@@ -85,8 +88,11 @@ public class Decision {
 
         // 간단한 도메인 규칙(원하면 강화 가능)
         d.validateConfidenceRange(d.confidence);
-
+        d.returnRate = null;
         return d;
+    }
+    public void recordReturnRate(BigDecimal returnRate) {
+        this.returnRate = returnRate; // 필요하면 범위검증 추가 가능
     }
     public void changeType(DecisionType type) {
         this.type = requireNonNull(type, "type");
