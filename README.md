@@ -491,4 +491,24 @@ GET /api/analytics/emotions
 ### Meaning
 This system transforms raw investment logs into behavioral insights.
 
+---
+
+## Project Day11 – Emotion Analytics
+
+### Goal
+Analyze how emotional decisions affect investment outcomes.
+
+### Implemented
+- Emotion-based aggregation analytics
+- Total / Win / Loss count
+- Average return rate
+- Win rate calculation
+
+### Endpoint
+GET /api/analytics/emotions
+
+### Tech Highlights
+- Spring Data JPA Projection
+- JPQL aggregation
+- Service-layer business calculation
 

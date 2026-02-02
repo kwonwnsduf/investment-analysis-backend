@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class EmotionAnalyticsService {
+public class AnalyticsService {
     private final DecisionRepository decisionRepository;
     public List<EmotionAnalyticsResponse> analyzeByEmotion(Long userId) {
         List<EmotionAnalyticsProjection> rows = decisionRepository.analyzeEmotionStats(userId);
@@ -27,6 +27,28 @@ public class EmotionAnalyticsService {
                         safeBigDecimal(p.getAvgReturnRate()),
                         calcWinRate(p.getWinCount(), p.getTotalCount())
                 ))
+                .toList();
+    }
+    public List<CriteriaAnalyticsResponse> analyzeCriteria(Long userId) {
+        List<CriteriaAnalyticsProjection> rows = decisionRepository.analyzeCriteriaStats(userId);
+
+        return rows.stream()
+                .map(p -> {
+                    long total = safeLong(p.getTotalCount());
+                    long win = safeLong(p.getWinCount());
+                    long loss = safeLong(p.getLossCount());
+                    BigDecimal avg = safeBigDecimal(p.getAvgReturnRate());
+
+                    return new CriteriaAnalyticsResponse(
+                            p.getCriteriaTagId(),
+                            p.getCriteriaName(),
+                            total,
+                            win,
+                            loss,
+                            avg,
+                            calcWinRate(win, total)
+                    );
+                })
                 .toList();
     }
     private long safeLong(Long v) {
