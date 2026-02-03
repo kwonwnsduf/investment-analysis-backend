@@ -512,3 +512,19 @@ GET /api/analytics/emotions
 - JPQL aggregation
 - Service-layer business calculation
 
+---
+
+## Project Day12 – Analytics Execution Pipeline
+
+> 투자 판단(Decision) 데이터를 기반으로  
+> **분석 결과를 계산 → JSON 스냅샷으로 저장 → API로 실행/조회**할 수 있는  
+> Analytics 실행 파이프라인을 구축한다.
+
+---
+
+### 내용
+
+- 판단 데이터(Decision)를 기반으로 분석 로직 실행
+- 계산 결과를 **JSON 형태로 직렬화하여 DB에 저장**
+- 분석 실행을 하나의 파이프라인으로 묶어 API로 제공
+- 향후 분석 확장을 고려한 구조 설계

@@ -1,5 +1,6 @@
 package com.example.investment.presentation.analytics;
 
+import com.example.investment.application.analytics.AnalyticsExecutionService;
 import com.example.investment.application.analytics.CriteriaAnalyticsResponse;
 import com.example.investment.application.analytics.EmotionAnalyticsResponse;
 import com.example.investment.application.analytics.AnalyticsService;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/analytics")
 public class AnalyticsController {
     private final AnalyticsService analyticsService;
+    private final AnalyticsExecutionService executionService;
     @GetMapping("/emotions")
     public List<EmotionAnalyticsResponse> emotions(@AuthenticationPrincipal Long userId){
         return analyticsService.analyzeByEmotion(userId);
@@ -25,5 +27,9 @@ public class AnalyticsController {
             @AuthenticationPrincipal Long userId
     ) {
         return analyticsService.analyzeCriteria(userId);
+    }
+    @GetMapping("/emotions2")
+    public List<EmotionAnalyticsResponse> emotions2(@AuthenticationPrincipal Long userId){
+        return executionService.getEmotionStats(userId);
     }
 }

@@ -6,6 +6,7 @@ import com.example.investment.domain.decision.EmotionTag;
 import com.example.investment.domain.investmentlog.DecisionType;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +25,8 @@ public class DecisionResponse {
     private Integer confidence;
     private String reason;
     private LocalDateTime decidedAt;
+
+    private BigDecimal returnRate;
 
     @Getter
     public static class CriteriaTagDto {
@@ -52,6 +55,7 @@ public class DecisionResponse {
         res.confidence = d.getConfidence();
         res.reason = d.getReason();
         res.decidedAt = d.getDecidedAt();
+        res.returnRate = d.getReturnRate();
         return res;
     }
 }

@@ -14,6 +14,8 @@ public interface DecisionRepository extends JpaRepository<Decision,Long> {
     );
     List<Decision> findByUser_IdOrderByDecidedAtDesc(Long userId);
     Optional<Decision> findByIdAndUser_Id(Long id, Long userId);
+    List<Decision> findByUser_IdAndReturnRateIsNullOrderByDecidedAtAsc(Long userId);
+    List<Decision> findByUser_IdAndSymbol_IdAndReturnRateIsNullOrderByDecidedAtAsc(Long userId, Long symbolId);
     @Query("""
         select
             e as emotion,

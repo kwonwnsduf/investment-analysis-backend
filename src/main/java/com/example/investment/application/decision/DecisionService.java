@@ -57,7 +57,7 @@ public class DecisionService {
         );
 
         Decision saved = decisionRepository.save(decision);
-        attachCriteria(decision, req.getCriteriaTagIds());
+        attachCriteria(saved, req.getCriteriaTagIds());
         return DecisionResponse.from(saved);
     }
     @Transactional(readOnly = true)
