@@ -528,3 +528,31 @@ GET /api/analytics/emotions
 - 계산 결과를 **JSON 형태로 직렬화하여 DB에 저장**
 - 분석 실행을 하나의 파이프라인으로 묶어 API로 제공
 - 향후 분석 확장을 고려한 구조 설계
+
+---
+# Project Day13 – Core Tests (Decision & Auth/JWT)
+
+ 
+Decision 도메인의 핵심 비즈니스 로직과  
+Auth + JWT 인증 흐름을 **실제 서비스와 동일한 방식으로 검증**한다.
+
+---
+
+##  테스트 목표
+
+### 1. Decision Domain
+- 투자 판단(Decision) 생성 로직 검증
+- CriteriaTag 연결 및 중복 제거 검증
+- Emotion 값 null 처리 검증
+- Criteria 교체(replace) 시
+  - 기존 연관관계 삭제(orphanRemoval)
+  - 신규 연관관계 재연결
+  - DB 기준으로 정확히 반영되는지 검증
+
+### 2. Auth & JWT
+- 회원가입(signup) 정상 동작 검증
+- 로그인(login) 시 JWT 토큰 발급 검증
+- JWT를 통한 보호 API 접근 가능 여부 검증
+- 토큰 미전달 시 401 Unauthorized 반환 검증
+
+---
