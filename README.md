@@ -556,3 +556,10 @@ Auth + JWT 인증 흐름을 **실제 서비스와 동일한 방식으로 검증*
 - 토큰 미전달 시 401 Unauthorized 반환 검증
 
 ---
+
+
+# Project Day14 — Docker 기반 로컬 운영 환경 구축
+
+## 내용
+Spring Boot 백엔드 서비스를 **Docker + Docker Compose** 환경에서 실행하고,  
+MySQL 컨테이너와 연동하여 **로컬에서도 운영 환경과 동일한 구조**를 완성한다.

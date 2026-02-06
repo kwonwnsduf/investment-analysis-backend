@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/analytics")
+@RequestMapping("/api/analytics/pipeline")
 public class AnalyticsPipelineController {
     private final AnalyticsPipelineService pipelineService;
 

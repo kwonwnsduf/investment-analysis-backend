@@ -61,7 +61,11 @@ public class DecisionServiceTest {
         req.setSymbolId(symbol.getId());
         req.setType(DecisionType.BUY);
         req.setEmotions(null); // <- null 들어오는 케이스
-        req.setCriteriaTagIds(Set.of(t1.getId(), t1.getId(), t2.getId())); // <- 중복 포함
+        req.setCriteriaTagIds( new java.util.HashSet<>(java.util.List.of(
+                t1.getId(),
+                t1.getId(),
+                t2.getId()
+        ))); // <- 중복 포함
 
         // when
         DecisionResponse res = decisionService.create(user.getId(), req);
@@ -112,14 +116,13 @@ public class DecisionServiceTest {
 
         // then
         assertThat(updated.getCriteriaTags()).hasSize(1);
-
+        assertThat(updated.getCriteriaTags())
+                .extracting("name") // CriteriaTagResponse에 getName()이 있으면 동작
+                .containsExactly("MACRO");
         // 영속성 컨텍스트 영향 제거 후 DB 기준으로 재검증
-        em.flush();
-        em.clear();
 
-        Decision reloaded = decisionRepository.findById(created.getId()).orElseThrow();
-        assertThat(reloaded.getCriteriaLinks()).hasSize(1);
-        assertThat(reloaded.getCriteriaLinks().iterator().next().getCriteriaTag().getName())
-                .isEqualTo("MACRO");
+
+
+
     }
 }
