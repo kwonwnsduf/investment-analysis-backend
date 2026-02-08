@@ -563,3 +563,27 @@ Auth + JWT 인증 흐름을 **실제 서비스와 동일한 방식으로 검증*
 ## 내용
 Spring Boot 백엔드 서비스를 **Docker + Docker Compose** 환경에서 실행하고,  
 MySQL 컨테이너와 연동하여 **로컬에서도 운영 환경과 동일한 구조**를 완성한다.
+
+---
+
+# Day 15 — AWS Deployment (Production Standard)
+
+## Architecture
+- Build & Image: GitHub Actions (CI)
+- Registry: Docker Hub
+- Runtime: AWS EC2 (run-only)
+- DB: AWS RDS MySQL
+
+## Deployment Flow
+1. `git push main`
+2. GitHub Actions runs:
+   - `./gradlew clean build`
+   - Docker image build & push
+   - SSH to EC2
+   - `docker pull` + `docker compose up -d`
+3. Verify:
+   - `/actuator/health` = UP
+
+## Notes
+- EC2 does not build source (prevents OOM on small instances)
+- Secrets are managed via GitHub Secrets and/or EC2 `.env`
